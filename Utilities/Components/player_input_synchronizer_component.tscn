@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d3yrt7r43syml"]
+
+[ext_resource type="Script" uid="uid://cxuw7ypdjk6wv" path="res://Utilities/Components/player_input_synchronizer_component.gd" id="1_pyxf0"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_lu8i8"]
+properties/0/path = NodePath(".:movement_vector")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="PlayerInputSyncronizerComponent" type="MultiplayerSynchronizer" unique_id=551206651]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_lu8i8")
+script = ExtResource("1_pyxf0")
+metadata/_custom_type_script = "uid://cxuw7ypdjk6wv"
