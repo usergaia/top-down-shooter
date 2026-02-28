@@ -14,16 +14,25 @@ properties/2/path = NodePath(".:direction")
 properties/2/spawn = true
 properties/2/replication_mode = 0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_lus1t"]
+
 [node name="Bullet" type="Node2D" unique_id=1880002742]
 script = ExtResource("1_lus1t")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1088038750]
 replication_config = SubResource("SceneReplicationConfig_lus1t")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=37278685]
-texture = ExtResource("2_gmytf")
-
 [node name="LifeTimer" type="Timer" parent="." unique_id=1083341201]
 wait_time = 2.0
 one_shot = true
 autostart = true
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1990524335]
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=549112447]
+shape = SubResource("CircleShape2D_lus1t")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=37278685]
+texture = ExtResource("2_gmytf")

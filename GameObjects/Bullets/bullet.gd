@@ -20,3 +20,6 @@ func _on_life_timer_timeout():
 	# only free bullets on host side to prevent conflicts
 	if is_multiplayer_authority():
 		queue_free()
+
+func register_collision():
+	queue_free()
