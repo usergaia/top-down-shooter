@@ -15,10 +15,16 @@ size = Vector2(16, 24)
 radius = 4.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=1941046415]
+collision_layer = 0
+motion_mode = 1
 script = ExtResource("1_xugip")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=87373148]
 replication_config = SubResource("SceneReplicationConfig_xugip")
+
+[node name="TargetAcquisitionTimer" type="Timer" parent="." unique_id=1918415746]
+wait_time = 0.2
+autostart = true
 
 [node name="Area2D" type="Area2D" parent="." unique_id=451620059]
 collision_layer = 0
