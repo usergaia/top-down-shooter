@@ -2,22 +2,30 @@
 
 [ext_resource type="Texture2D" uid="uid://dsfja04rnu8rc" path="res://Entities/Enemy/enemy_medium.png" id="1_egd74"]
 [ext_resource type="Script" uid="uid://b387wykqpuhsa" path="res://Entities/Enemy/enemy.gd" id="1_xugip"]
+[ext_resource type="PackedScene" uid="uid://cyux3o3etqn31" path="res://Utilities/Components/health_component.tscn" id="2_l2yo7"]
+[ext_resource type="PackedScene" uid="uid://cs8vt7wf1q4l1" path="res://Utilities/Components/hurtbox_component.tscn" id="3_6b1qy"]
+[ext_resource type="PackedScene" uid="uid://gnjmd3ilsnry" path="res://Utilities/Components/hitbox_component.tscn" id="5_uvcgk"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xugip"]
 properties/0/path = NodePath(".:global_position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_egd74"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvcgk"]
 size = Vector2(16, 24)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_egd74"]
 radius = 4.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gyqvw"]
+size = Vector2(10, 14)
+
 [node name="Enemy" type="CharacterBody2D" unique_id=1941046415]
 collision_layer = 0
 motion_mode = 1
 script = ExtResource("1_xugip")
+
+[node name="HealthComponent" parent="." unique_id=2094651986 instance=ExtResource("2_l2yo7")]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=87373148]
 replication_config = SubResource("SceneReplicationConfig_xugip")
@@ -26,13 +34,12 @@ replication_config = SubResource("SceneReplicationConfig_xugip")
 wait_time = 0.2
 autostart = true
 
-[node name="Area2D" type="Area2D" parent="." unique_id=451620059]
-collision_layer = 0
-collision_mask = 256
+[node name="HurtboxComponent" parent="." unique_id=577249865 node_paths=PackedStringArray("health_component") instance=ExtResource("3_6b1qy")]
+health_component = NodePath("../HealthComponent")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" unique_id=574271441]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="HurtboxComponent" unique_id=669239887]
 position = Vector2(0, -12)
-shape = SubResource("RectangleShape2D_egd74")
+shape = SubResource("RectangleShape2D_uvcgk")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=509577191]
 texture = ExtResource("1_egd74")
@@ -42,3 +49,10 @@ offset = Vector2(-8, -23)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=251691689]
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_egd74")
+
+[node name="HitboxComponent" parent="." unique_id=733873329 instance=ExtResource("5_uvcgk")]
+position = Vector2(0, -10)
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1662911556]
+shape = SubResource("RectangleShape2D_gyqvw")

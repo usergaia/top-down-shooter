@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var player_input_synchronizer_component: PlayerInputSynchronizerComponent = $PlayerInputSynchronizerComponent
 @onready var weapon_root: Node2D = $WeaponRoot
 @onready var fire_rate_timer: Timer = $FireRateTimer
+@onready var health_component: HealthComponent = $HealthComponent
 
 var bullet_scene: PackedScene = preload("uid://0aqqgp0vrrdj")
 var input_player_authority: int
@@ -13,7 +14,8 @@ const SPEED = 300.0
 func _ready():
 	# only give control access depending on the player's peer id
 	player_input_synchronizer_component.set_multiplayer_authority(input_player_authority) 
-
+	health_component.died.connect(_on_died)
+	
 func _process(_delta: float) -> void:
 	# a specific player's weapon position pointing + mouse position
 	var aim_position = weapon_root.global_position + player_input_synchronizer_component.aim_vector
@@ -33,3 +35,6 @@ func try_create_bullet():
 	bullet.start(player_input_synchronizer_component.aim_vector)
 	get_parent().add_child(bullet, true)
 	fire_rate_timer.start()
+
+func _on_died():
+	print('player died')

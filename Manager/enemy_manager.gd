@@ -13,10 +13,12 @@ const ENEMY_SPAWN_TIME_GROWTH: float = -.15
 @onready var round_timer: Timer = $RoundTimer
 
 var round_count: int
+var enemy_count: int
 
 func _ready() -> void:
 	spawn_interval_timer.timeout.connect(_on_spawner_interval_timer_timeout)
 	round_timer.timeout.connect(_on_round_timer_timeout)
+	GameEvents.enemy_died.connect(_on_enemy_died)
 	begin_round()
 
 func begin_round():
@@ -26,7 +28,16 @@ func begin_round():
 	
 	spawn_interval_timer.wait_time = BASE_ENEMY_SPAWN_TIME + ((round_count-1) * ENEMY_SPAWN_TIME_GROWTH)
 	spawn_interval_timer.start()
+	print("Round %s" % round_count)
 	
+func check_round_completed():
+	if !round_timer.is_stopped():
+		return
+		
+	if enemy_count == 0:
+		print('Game complete!')
+		begin_round()
+
 func _on_spawner_interval_timer_timeout():
 	if is_multiplayer_authority():
 		spawn_enemy()
@@ -36,6 +47,7 @@ func spawn_enemy():
 	var enemy = enemy_scene.instantiate() as Node2D
 	enemy.global_position = get_random_spawn_position()
 	enemy_spawn_root.add_child(enemy, true)
+	enemy_count += 1
 	
 func get_random_spawn_position() -> Vector2:
 	var x = randi_range(0, spawn_rect.size.x)
@@ -45,4 +57,8 @@ func get_random_spawn_position() -> Vector2:
 func _on_round_timer_timeout():
 	if is_multiplayer_authority():
 		spawn_interval_timer.stop()
-		print("Round over!")
+		check_round_completed()
+
+func _on_enemy_died():
+	enemy_count -= 1
+	check_round_completed()

@@ -2,8 +2,10 @@
 
 [ext_resource type="Script" uid="uid://tvn2tpbfo0uk" path="res://Entities/Player/player.gd" id="1_mv1ah"]
 [ext_resource type="PackedScene" uid="uid://d3yrt7r43syml" path="res://Utilities/Components/player_input_synchronizer_component.tscn" id="2_3uyv8"]
+[ext_resource type="PackedScene" uid="uid://cyux3o3etqn31" path="res://Utilities/Components/health_component.tscn" id="2_4wf4l"]
 [ext_resource type="Texture2D" uid="uid://bluokcvylwdng" path="res://Entities/Player/player-medium.png" id="2_lu8i8"]
 [ext_resource type="Texture2D" uid="uid://cfnmer626derb" path="res://Entities/Player/rifle.png" id="3_tekja"]
+[ext_resource type="PackedScene" uid="uid://cs8vt7wf1q4l1" path="res://Utilities/Components/hurtbox_component.tscn" id="6_4wf4l"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3uyv8"]
 properties/0/path = NodePath(".:global_position")
@@ -12,10 +14,16 @@ properties/0/replication_mode = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ix6vc"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_4wf4l"]
+radius = 5.0
+
 [node name="Player" type="CharacterBody2D" unique_id=360653061 groups=["player"]]
 collision_layer = 0
 motion_mode = 1
 script = ExtResource("1_mv1ah")
+
+[node name="HealthComponent" parent="." unique_id=2094651986 instance=ExtResource("2_4wf4l")]
+max_health = 5
 
 [node name="PlayerInputSynchronizerComponent" parent="." unique_id=1919296244 node_paths=PackedStringArray("aim_root") instance=ExtResource("2_3uyv8")]
 aim_root = NodePath("../WeaponRoot")
@@ -45,3 +53,11 @@ offset = Vector2(-15, -6)
 visible = false
 position = Vector2(0, -10)
 shape = SubResource("CircleShape2D_ix6vc")
+
+[node name="HurtboxComponent2" parent="." unique_id=577249865 node_paths=PackedStringArray("health_component") instance=ExtResource("6_4wf4l")]
+collision_mask = 4
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent2" unique_id=961508222]
+position = Vector2(-1, -12)
+shape = SubResource("CircleShape2D_4wf4l")
