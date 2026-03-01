@@ -14,8 +14,8 @@ func _ready() -> void:
 func _process(delta: float):
 	global_position += direction * SPEED * delta
 
-func start(direction: Vector2):
-	self.direction = direction
+func start(dir: Vector2):
+	direction = dir
 	rotation = direction.angle()
 	
 func _on_life_timer_timeout():

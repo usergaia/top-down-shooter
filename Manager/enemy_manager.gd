@@ -50,8 +50,8 @@ func spawn_enemy():
 	enemy_count += 1
 	
 func get_random_spawn_position() -> Vector2:
-	var x = randi_range(0, spawn_rect.size.x)
-	var y = randi_range(0, spawn_rect.size.y)
+	var x = randf_range(0, spawn_rect.size.x)
+	var y = randf_range(0, spawn_rect.size.y)
 	return spawn_rect.global_position + Vector2(x,y)
 
 func _on_round_timer_timeout():
