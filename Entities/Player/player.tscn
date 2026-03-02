@@ -26,7 +26,7 @@ script = ExtResource("1_mv1ah")
 max_health = 5
 
 [node name="PlayerInputSynchronizerComponent" parent="." unique_id=1919296244 node_paths=PackedStringArray("aim_root") instance=ExtResource("2_3uyv8")]
-aim_root = NodePath("../WeaponRoot")
+aim_root = NodePath("../Visuals/WeaponRoot")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1076073831]
 replication_config = SubResource("SceneReplicationConfig_3uyv8")
@@ -35,19 +35,21 @@ replication_config = SubResource("SceneReplicationConfig_3uyv8")
 wait_time = 0.25
 one_shot = true
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1225682613]
+[node name="Visuals" type="Node2D" parent="." unique_id=1360260059]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=1225682613]
 texture = ExtResource("2_lu8i8")
 centered = false
-offset = Vector2(-9, -26)
+offset = Vector2(-8, -26)
 
-[node name="WeaponRoot" type="Node2D" parent="." unique_id=259143248]
+[node name="WeaponRoot" type="Node2D" parent="Visuals" unique_id=259143248]
 position = Vector2(0, -9)
 
-[node name="Sprite2D" type="Sprite2D" parent="WeaponRoot" unique_id=921644398]
+[node name="Sprite2D" type="Sprite2D" parent="Visuals/WeaponRoot" unique_id=921644398]
 position = Vector2(6, 0)
 texture = ExtResource("3_tekja")
 centered = false
-offset = Vector2(-15, -6)
+offset = Vector2(-13, -6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=663649015]
 visible = false
@@ -55,6 +57,7 @@ position = Vector2(0, -10)
 shape = SubResource("CircleShape2D_ix6vc")
 
 [node name="HurtboxComponent2" parent="." unique_id=577249865 node_paths=PackedStringArray("health_component") instance=ExtResource("6_4wf4l")]
+visible = false
 collision_mask = 4
 health_component = NodePath("../HealthComponent")
 

@@ -2,9 +2,10 @@ class_name Player
 extends CharacterBody2D
 
 @onready var player_input_synchronizer_component: PlayerInputSynchronizerComponent = $PlayerInputSynchronizerComponent
-@onready var weapon_root: Node2D = $WeaponRoot
+@onready var weapon_root: Node2D = $Visuals/WeaponRoot
 @onready var fire_rate_timer: Timer = $FireRateTimer
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var visuals: Node2D = $Visuals
 
 var bullet_scene: PackedScene = preload("uid://0aqqgp0vrrdj")
 var input_player_authority: int
@@ -17,16 +18,20 @@ func _ready():
 	health_component.died.connect(_on_died)
 	
 func _process(_delta: float) -> void:
-	# a specific player's weapon position pointing + mouse position
-	var aim_position = weapon_root.global_position + player_input_synchronizer_component.aim_vector
-	weapon_root.look_at(aim_position)
-	
+	update_aim_position()
 	if is_multiplayer_authority():
 		velocity = player_input_synchronizer_component.movement_vector*SPEED
 		move_and_slide()
 		if player_input_synchronizer_component.is_attack_pressed:
 			try_create_bullet()
-		
+
+func update_aim_position():
+	# a specific player's weapon position pointing + mouse position
+	var aim_vector = player_input_synchronizer_component.aim_vector
+	var aim_position = weapon_root.global_position + aim_vector
+	visuals.scale = Vector2.ONE if aim_vector.x >= 0 else Vector2(-1,1)
+	weapon_root.look_at(aim_position)
+
 func try_create_bullet():
 	if !fire_rate_timer.is_stopped():
 		return
