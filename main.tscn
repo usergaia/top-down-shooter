@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bara1hulpfww6" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="Texture2D" uid="uid://c2so226ncvcp3" path="res://Assets/arena.png" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://btbjvdgj51ldv" path="res://Manager/enemy_manager.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bewxmcek24ksl" path="res://UI/GameUI/game_ui.tscn" id="4_1bvp3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
 size = Vector2(32, 300)
@@ -20,6 +21,9 @@ spawn_rect = NodePath("../SpawnRect")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=251415783]
 _spawnable_scenes = PackedStringArray("uid://0aqqgp0vrrdj", "uid://clxyab02sbitr")
 spawn_path = NodePath("../YSortRoot")
+
+[node name="GameUI" parent="." unique_id=1242413856 node_paths=PackedStringArray("enemy_manager") instance=ExtResource("4_1bvp3")]
+enemy_manager = NodePath("../EnemyManager")
 
 [node name="PlayerSpawnPosition" type="Marker2D" parent="." unique_id=1486322172]
 position = Vector2(320, 185)
