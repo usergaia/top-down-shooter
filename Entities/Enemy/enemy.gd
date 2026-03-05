@@ -7,35 +7,43 @@ const SPEED = 60
 @onready var visuals: Node2D = $Visuals
 
 var target_position: Vector2
-var is_spawning: bool
+var state_machine: CallableStateMachine = CallableStateMachine.new()
 
 func _ready():
+	state_machine.add_states(state_spawn, enter_state_spawn, Callable())
+	state_machine.add_states(state_normal, enter_state_normal, Callable())
+	state_machine.set_initial_state(state_spawn)
+
 	target_acquisition_timer.timeout.connect(_on_target_acquisition_timer_timeout)
-	play_spawn_animation()
 	
 	if is_multiplayer_authority():
 		health_component.died.connect(_on_died)
-		acquire_target()
 
 func _process(_delta: float) -> void:
-	if is_spawning:
-		return
-		
-	if is_multiplayer_authority() :
-		velocity = global_position.direction_to(target_position) * SPEED
+	state_machine.update()
+	if is_multiplayer_authority():
 		move_and_slide()
 
-	flip()
-
-func play_spawn_animation():
-	is_spawning = true
+func enter_state_spawn():
 	var tween := create_tween()
 	tween.tween_property(visuals, "scale", Vector2.ONE, 0.4)\
 		.from(Vector2.ZERO)\
 		.set_ease(Tween.EASE_OUT)\
 		.set_trans(Tween.TRANS_BACK)
 	await tween.finished
-	is_spawning = false
+	state_machine.change_state(state_normal)
+
+func state_spawn():
+	pass
+
+func enter_state_normal():
+	if is_multiplayer_authority():
+		acquire_target()
+
+func state_normal():
+	if is_multiplayer_authority():
+		velocity = global_position.direction_to(target_position) * SPEED
+	flip()
 
 func flip():
 	visuals.scale = Vector2.ONE if global_position.x < target_position.x else Vector2(-1,1)
